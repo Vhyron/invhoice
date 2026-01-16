@@ -6,6 +6,8 @@ interface InvoicePreviewProps {
 
 export function InvoicePreview({ data }: InvoicePreviewProps) {
   const subtotal = data.items.reduce((sum, item) => sum + item.amount, 0);
+  const taxAmount = subtotal * (data.taxRate / 100);
+  const total = subtotal + taxAmount;
 
   return (
     <div className="bg-white p-12">
@@ -89,9 +91,15 @@ export function InvoicePreview({ data }: InvoicePreviewProps) {
             <span className="text-gray-600">Subtotal:</span>
             <span className="font-medium">₱{subtotal.toFixed(2)}</span>
           </div>
+          {data.taxRate > 0 && (
+            <div className="flex justify-between py-2 border-b border-gray-200">
+              <span className="text-gray-600">Tax ({data.taxRate}%):</span>
+              <span className="font-medium">₱{taxAmount.toFixed(2)}</span>
+            </div>
+          )}
           <div className="flex justify-between py-3 border-t-2 border-gray-300">
             <span className="text-lg font-semibold">Total:</span>
-            <span className="text-lg font-bold">₱{subtotal.toFixed(2)}</span>
+            <span className="text-lg font-bold">₱{total.toFixed(2)}</span>
           </div>
         </div>
       </div>
