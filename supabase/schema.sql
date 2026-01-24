@@ -18,6 +18,7 @@ create table invoices (
   invoice_number text not null default '',
   invoice_date date not null,
   due_date date not null,
+  currency text not null default 'PHP',
 
   -- Line items (stored as JSON array)
   items jsonb not null default '[]',

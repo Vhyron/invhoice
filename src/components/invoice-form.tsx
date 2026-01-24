@@ -3,6 +3,7 @@
 import { useState, useRef } from "react";
 import { InvoicePreview } from "@/components/invoice-preview";
 import { type InvoiceData } from "@/types/invoice";
+import { CURRENCIES, getCurrencySymbol } from "@/lib/currencies";
 
 interface InvoiceFormProps {
   defaultData: InvoiceData;
@@ -44,6 +45,7 @@ export function InvoiceForm({
   const subtotal = formData.items.reduce((sum, item) => sum + item.amount, 0);
   const taxAmount = subtotal * (formData.taxRate / 100);
   const total = subtotal + taxAmount;
+  const sym = getCurrencySymbol(formData.currency);
 
   const handleDownloadPDF = async () => {
     if (!previewRef.current) return;
@@ -175,7 +177,21 @@ export function InvoiceForm({
         {/* Invoice Details */}
         <section>
           <h2 className="text-xl font-medium mb-4">Invoice Details</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div>
+              <label className={labelClass}>Currency *</label>
+              <select
+                value={formData.currency}
+                onChange={(e) => setFormData({ ...formData, currency: e.target.value })}
+                className={inputClass}
+              >
+                {CURRENCIES.map((c) => (
+                  <option key={c.code} value={c.code}>
+                    {c.symbol} {c.code} — {c.name}
+                  </option>
+                ))}
+              </select>
+            </div>
             <div>
               <label className={labelClass}>Invoice Number *</label>
               <input
@@ -269,7 +285,7 @@ export function InvoiceForm({
                   <label className={labelClass}>Amount</label>
                   <input
                     type="text"
-                    value={`₱${item.amount.toFixed(2)}`}
+                    value={`${sym}${item.amount.toFixed(2)}`}
                     disabled
                     className="w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-lg text-gray-700"
                   />
@@ -295,7 +311,7 @@ export function InvoiceForm({
             <div className="w-72 space-y-3">
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium text-gray-700">Subtotal</span>
-                <span className="font-medium">₱{subtotal.toFixed(2)}</span>
+                <span className="font-medium">{sym}{subtotal.toFixed(2)}</span>
               </div>
               <div className="flex items-center justify-between gap-4">
                 <label className="text-sm font-medium text-gray-700 whitespace-nowrap">
@@ -314,13 +330,13 @@ export function InvoiceForm({
                     className="w-20 px-3 py-1.5 border border-gray-300 rounded-lg text-right focus:ring-2 focus:ring-black focus:border-transparent"
                   />
                   <span className="text-gray-600 text-sm min-w-[80px] text-right">
-                    ₱{taxAmount.toFixed(2)}
+                    {sym}{taxAmount.toFixed(2)}
                   </span>
                 </div>
               </div>
               <div className="flex justify-between text-xl font-semibold pt-3 border-t border-gray-300">
                 <span>Total</span>
-                <span>₱{total.toFixed(2)}</span>
+                <span>{sym}{total.toFixed(2)}</span>
               </div>
             </div>
           </div>

@@ -16,6 +16,7 @@ export interface InvoiceData {
   invoiceNumber: string;
   invoiceDate: string;
   dueDate: string;
+  currency: string;
   items: InvoiceItem[];
   taxRate: number;
   notes: string;
@@ -35,6 +36,7 @@ export interface DBInvoice {
   invoice_number: string;
   invoice_date: string;
   due_date: string;
+  currency: string;
   items: InvoiceItem[];
   tax_rate: number;
   subtotal: number;
@@ -58,6 +60,7 @@ export const initialInvoiceData: InvoiceData = {
   invoiceNumber: "",
   invoiceDate: "",
   dueDate: "",
+  currency: "PHP",
   items: [{ description: "", quantity: 1, rate: 0, amount: 0 }],
   taxRate: 0,
   notes: "",

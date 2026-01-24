@@ -1,4 +1,5 @@
 import { type InvoiceData } from "@/types/invoice";
+import { getCurrencySymbol } from "@/lib/currencies";
 
 interface InvoicePreviewProps {
   data: InvoiceData;
@@ -8,6 +9,7 @@ export function InvoicePreview({ data }: InvoicePreviewProps) {
   const subtotal = data.items.reduce((sum, item) => sum + item.amount, 0);
   const taxAmount = subtotal * (data.taxRate / 100);
   const total = subtotal + taxAmount;
+  const sym = getCurrencySymbol(data.currency);
 
   return (
     <div className="bg-white p-12">
@@ -69,8 +71,8 @@ export function InvoicePreview({ data }: InvoicePreviewProps) {
                 <tr key={index} className="border-b border-gray-200">
                   <td className="py-3">{item.description || "---"}</td>
                   <td className="text-right py-3">{item.quantity}</td>
-                  <td className="text-right py-3">₱{item.rate.toFixed(2)}</td>
-                  <td className="text-right py-3">₱{item.amount.toFixed(2)}</td>
+                  <td className="text-right py-3">{sym}{item.rate.toFixed(2)}</td>
+                  <td className="text-right py-3">{sym}{item.amount.toFixed(2)}</td>
                 </tr>
               ))
             ) : (
@@ -89,17 +91,17 @@ export function InvoicePreview({ data }: InvoicePreviewProps) {
         <div className="w-64">
           <div className="flex justify-between py-2 border-b border-gray-200">
             <span className="text-gray-600">Subtotal:</span>
-            <span className="font-medium">₱{subtotal.toFixed(2)}</span>
+            <span className="font-medium">{sym}{subtotal.toFixed(2)}</span>
           </div>
           {data.taxRate > 0 && (
             <div className="flex justify-between py-2 border-b border-gray-200">
               <span className="text-gray-600">Tax ({data.taxRate}%):</span>
-              <span className="font-medium">₱{taxAmount.toFixed(2)}</span>
+              <span className="font-medium">{sym}{taxAmount.toFixed(2)}</span>
             </div>
           )}
           <div className="flex justify-between py-3 border-t-2 border-gray-300">
             <span className="text-lg font-semibold">Total:</span>
-            <span className="text-lg font-bold">₱{total.toFixed(2)}</span>
+            <span className="text-lg font-bold">{sym}{total.toFixed(2)}</span>
           </div>
         </div>
       </div>

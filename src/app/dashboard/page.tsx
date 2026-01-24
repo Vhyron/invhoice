@@ -6,6 +6,7 @@ import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 import { getInvoices, deleteInvoice, updateInvoiceStatus } from "@/lib/invoices";
 import { type DBInvoice } from "@/types/invoice";
+import { getCurrencySymbol } from "@/lib/currencies";
 
 const STATUS_STYLES: Record<DBInvoice["status"], string> = {
   draft: "bg-gray-100 text-gray-700",
@@ -167,7 +168,7 @@ export default function Dashboard() {
                       {formatDate(invoice.due_date)}
                     </td>
                     <td className="px-6 py-4 text-sm font-medium text-right">
-                      ₱{invoice.total.toFixed(2)}
+                      {getCurrencySymbol(invoice.currency)}{invoice.total.toFixed(2)}
                     </td>
                     <td className="px-6 py-4">
                       <select
