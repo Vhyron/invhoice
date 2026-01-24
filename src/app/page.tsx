@@ -21,12 +21,20 @@ export default function Home() {
           </Link>
         </nav>
 
-        <Link 
-          href="/signup"
-          className="bg-black text-white px-6 py-2.5 rounded-lg text-sm hover:bg-gray-800 transition-colors"
-        >
-          Sign up
-        </Link>
+        <div className="flex items-center gap-3">
+          <Link
+            href="/auth/login"
+            className="text-sm text-gray-600 hover:text-black transition-colors"
+          >
+            Sign in
+          </Link>
+          <Link
+            href="/auth/signup"
+            className="bg-black text-white px-6 py-2.5 rounded-lg text-sm hover:bg-gray-800 transition-colors"
+          >
+            Sign up
+          </Link>
+        </div>
       </header>
 
       {/* Hero Section */}
